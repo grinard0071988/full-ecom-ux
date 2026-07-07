@@ -106,8 +106,8 @@ const productSlice = createSlice({
             p.img ?? p.image ?? p.image_url ?? p.thumbnail ?? null
           ),
           //Add safe defaults for fields the backend doesn't send yet
-          sizes: p.sizes ?? [], // QuickViewModal uses this
-          colors: p.colors ?? [], // ProductCard + QuickViewModal use this
+          sizes: p.sizes ?? [],
+          colors: p.colors ?? [],
           inStock: p.in_stock ?? p.is_active ?? true,
           rating: Number(p.rating ?? 0),
           reviews: Number(p.reviews ?? p.review_count ?? 0),
@@ -138,8 +138,8 @@ const productSlice = createSlice({
             p.img ?? p.image ?? p.image_url ?? p.thumbnail ?? null
           ),
           // Add safe defaults for fields the backend doesn't send yet
-          sizes: p.sizes ?? [], // QuickViewModal uses this
-          colors: p.colors ?? [], // ProductCard + QuickViewModal use this
+          sizes: p.sizes ?? [],
+          colors: p.colors ?? [],
           inStock: p.in_stock ?? p.is_active ?? true,
           rating: Number(p.rating ?? 0),
           reviews: Number(p.reviews ?? p.review_count ?? 0),
@@ -158,5 +158,3 @@ const productSlice = createSlice({
 export const { clearSelectedProduct, invalidateProducts } =
   productSlice.actions;
 export default productSlice.reducer;
-
-///////////////////////////////////////////////////////////////////////////

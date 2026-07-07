@@ -1,4 +1,4 @@
-// ─── Icon components ──────────────────────────────────────────────────────────
+//Icon components
 // All icons are inline SVGs so there's no icon-font dependency.
 
 export const IconSearch = () => (

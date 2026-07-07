@@ -38,12 +38,16 @@ export function Navbar({
     <nav className="sticky top-0 z-50 bg-white/95 backdrop-blur-sm border-b border-stone-100">
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
         <div className="flex items-center justify-between h-16 gap-4">
-          {/* ── Logo — left aligned ── */}
+          {/* Logo — left aligned */}
           <span className="font-serif text-lg sm:text-xl font-semibold tracking-tight shrink-0">
-            SHOPNJOY
+            <img
+              src="shopnjoy_logo.svg"
+              className="navbar-logo"
+              alt="shopnjoy"
+            />
           </span>
 
-          {/* ── Desktop nav links — hidden on mobile ── */}
+          {/* Desktop nav links — hidden on mobile  */}
           <div className="hidden md:flex items-center gap-6 lg:gap-8 flex-1">
             {["Collections", "New In", "Sale", "About"].map((link) => (
               <a
@@ -56,7 +60,7 @@ export function Navbar({
             ))}
           </div>
 
-          {/* ── Action icons ── */}
+          {/* Action icons  */}
           <div className="flex items-center gap-1 ml-auto">
             {/* Search */}
             <button

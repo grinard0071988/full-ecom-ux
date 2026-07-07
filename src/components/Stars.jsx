@@ -1,4 +1,4 @@
-// ─── Stars — reusable star-rating display ─────────────────────────────────────
+// Stars — reusable star-rating display
 
 export function Stars({ rating, size = 12 }) {
   return (

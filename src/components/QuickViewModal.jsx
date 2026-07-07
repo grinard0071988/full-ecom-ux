@@ -6,7 +6,7 @@ import { Stars } from "./Stars";
 import { Badge } from "./Badge";
 import { addToCart } from "../features/cart/cartSlice";
 
-// ─── QuickViewModal ───────────────────────────────────────────────────────────
+//QuickViewModal
 
 export function QuickViewModal({
   product,
@@ -62,7 +62,7 @@ export function QuickViewModal({
         </button>
 
         <div className="grid md:grid-cols-2">
-          {/* ── Image ── */}
+          {/* Image  */}
           <div className="p-6">
             <div className="aspect-square rounded-xl overflow-hidden bg-stone-100">
               <img
@@ -73,7 +73,7 @@ export function QuickViewModal({
             </div>
           </div>
 
-          {/* ── Details ── */}
+          {/* Details  */}
           <div className="p-6 flex flex-col">
             <div className="flex items-start justify-between mb-2">
               <span className="text-xs text-stone-400 uppercase tracking-widest">

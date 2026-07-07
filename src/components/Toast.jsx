@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { IconCheck } from "../icons/index";
 
-// ─── Toast — transient success notification ───────────────────────────────────
+//Toast - transient success notification
 
 export function Toast({ message, onDone }) {
   useEffect(() => {

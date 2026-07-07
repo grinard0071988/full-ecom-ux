@@ -1,8 +1,13 @@
-/////////////////////////////////////////////////////////////////////////
 import { useState, useCallback, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { logoutUser } from "../features/auth/authSlice";
-import { updateCartItem, removeCartItem } from "../features/cart/cartSlice";
+import {
+  addToCart,
+  updateCartItem,
+  removeCartItem,
+  fetchCart,
+  clearCart,
+} from "../features/cart/cartSlice";
 
 //UI primitives
 import { Toast } from "../components/Toast";
@@ -25,14 +30,17 @@ export default function Home() {
   const user = useSelector((state) => state.auth.user);
   const cart = useSelector((state) => state.cart.items);
 
+  useEffect(() => {
+    if (user) {
+      dispatch(fetchCart());
+    }
+  }, [user, dispatch]);
+
   //Filter / sort state — owned here, passed down to ProductList ──
   const [activeCategory, setActiveCategory] = useState(0); // 0 = "All" (matches category_id)
   const [sortBy, setSortBy] = useState("Featured");
   const [searchQuery, setSearchQuery] = useState("");
   const [priceRange, setPriceRange] = useState(500);
-
-  //  Commerce state ──
-  //const [cart, setCart] = useState([]);
 
   //UI state ──
   const [quickViewProduct, setQuickViewProduct] = useState(null);
@@ -45,7 +53,6 @@ export default function Home() {
   const cartCount = cart.reduce((s, i) => s + i.qty, 0);
 
   //Local wishlist (frontend only until backend is ready)
-  // const [wishlistIds, setWishlistIds] = useState(new Set());
   const [wishlistIds, setWishlistIds] = useState(() => {
     try {
       const stored = localStorage.getItem("wishlist");
@@ -55,23 +62,11 @@ export default function Home() {
     }
   });
 
-  // When user logs in and profile loads — merge with backend wishlist
-  useEffect(() => {
-    if (user) {
-      const saved = user?.wishlist ?? user?.wishlist_items ?? [];
-      if (saved.length > 0) {
-        const ids = saved.map((item) =>
-          typeof item === "object" ? item.product_id ?? item.id : item
-        );
-        // Merge backend wishlist with any locally added items
-        setWishlistIds((prev) => new Set([...prev, ...ids]));
-      }
-    } else {
-      // Logged out — clear everything
-      setWishlistIds(new Set());
-      localStorage.removeItem("wishlist");
-    }
-  }, [user]);
+  //Toast
+  const showToast = useCallback((msg) => {
+    setToast(null);
+    setTimeout(() => setToast(msg), 10);
+  }, []);
 
   // Persist to localStorage on every change
   useEffect(() => {
@@ -90,23 +85,35 @@ export default function Home() {
     });
   }, []);
 
+  //Cart handlers
+  const addCartItem = useCallback(
+    (product, selectedSize, qty = 1) => {
+      dispatch(
+        addToCart({
+          id: product.id,
+          name: product.name,
+          price: product.price,
+          img: product.img,
+          selectedSize,
+          qty,
+        })
+      );
+      showToast(`${product.name} added to bag`);
+    },
+    [dispatch, showToast]
+  );
+
   //onUpdateQty handler
   const handleUpdateQty = useCallback(
     (cartId, qty) => {
       if (qty < 1) {
-        dispatch(removeCartItem(cartId)); // remove cleanly
+        dispatch(removeCartItem(cartId));
       } else {
         dispatch(updateCartItem({ item_id: cartId, quantity: qty }));
       }
     },
     [dispatch]
   );
-
-  //Toast
-  const showToast = useCallback((msg) => {
-    setToast(null);
-    setTimeout(() => setToast(msg), 10);
-  }, []);
 
   //Auth handlers
   const openAuth = (tab = "login") => {
@@ -116,9 +123,8 @@ export default function Home() {
   const closeAuth = () => setAuthOpen(false);
 
   const handleLogout = useCallback(() => {
-    dispatch(logoutUser()); //correct action name
-    // setWishlistIds(new Set());
-    // localStorage.removeItem("wishlist");
+    dispatch(logoutUser());
+    dispatch(clearCart());
     showToast("Signed out successfully");
   }, [dispatch, showToast]);
 
@@ -135,10 +141,10 @@ export default function Home() {
       <style>{GLO_STYLES}</style>
 
       <div className="min-h-screen bg-stone-100 font-sans text-stone-900">
-        {/* ── Navbar ── */}
+        {/* Navbar  */}
         <Navbar
           user={user}
-          wishlistCount={wishlistIds.size} // replace with wishlist count when backend ready
+          wishlistCount={user ? wishlistIds.size : 0} // replace with wishlist count when backend ready
           cartCount={cartCount}
           onOpenCart={() => setCartOpen(true)}
           onOpenAuth={openAuth}
@@ -147,7 +153,7 @@ export default function Home() {
           onSearchChange={setSearchQuery}
         />
 
-        {/* ── Hero ── */}
+        {/*  Hero  */}
         <div
           className="relative overflow-hidden bg-stone-900"
           style={{ minHeight: 320 }}
@@ -178,12 +184,12 @@ export default function Home() {
           </div>
         </div>
 
-        {/* ── Shipping banner ── */}
+        {/*  Shipping banner  */}
         <div className="bg-stone-800 text-stone-300 text-center py-2.5 text-xs tracking-widest uppercase">
           Free shipping on orders over $200 · Free returns within 60 days
         </div>
 
-        {/* ── Catalogue ── */}
+        {/*  Catalogue  */}
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8">
           {/* Filter / sort row */}
           <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between mb-8">
@@ -247,6 +253,7 @@ export default function Home() {
             onClearFilters={clearFilters}
             wishlistIds={wishlistIds}
             toggleWishlist={toggleWishlist}
+            user={user}
           />
 
           {/* Newsletter */}
@@ -272,14 +279,15 @@ export default function Home() {
           </div>
         </div>
 
-        {/* ── Footer ── */}
+        {/*  Footer  */}
         <Footer />
 
-        {/* ── Modals ── */}
+        {/*  Modals  */}
         {quickViewProduct && (
           <QuickViewModal
             product={quickViewProduct}
             onClose={() => setQuickViewProduct(null)}
+            onAddToCart={addCartItem}
             wishlist={[...wishlistIds]}
             onWishlist={toggleWishlist}
           />
@@ -289,8 +297,6 @@ export default function Home() {
           <CartDrawer
             cart={cart}
             onClose={() => setCartOpen(false)}
-            // onRemove={removeFromCart}
-            // onUpdateQty={updateQty}
             onRemove={(cartId) => dispatch(removeCartItem(cartId))}
             onUpdateQty={handleUpdateQty}
           />

@@ -1,4 +1,3 @@
-////////////////////////////////////////////////////////////////////////////
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { loginUser, registerUser, loadUser } from "../features/auth/authSlice";
@@ -33,7 +32,6 @@ export function AuthModal({ onClose, initialTab = "login" }) {
   };
 
   return (
-    // <div className="fixed inset-0 flex items-center justify-center">
     <div
       className="fixed inset-0 z-[110] flex items-center justify-center p-4"
       style={{
@@ -42,7 +40,6 @@ export function AuthModal({ onClose, initialTab = "login" }) {
       }}
       onClick={(e) => e.target === e.currentTarget && onClose()}
     >
-      {/* <div className="bg-white rounded-2xl w-full max-w-md p-6 relative"> */}
       <div
         className="bg-white rounded-2xl w-full max-w-md shadow-2xl overflow-hidden relative"
         style={{ animation: "slideUp 0.28s ease" }}
@@ -65,10 +62,7 @@ export function AuthModal({ onClose, initialTab = "login" }) {
             </p>
           </div>
           {/* Tabs */}
-          {/* <div className="flex mb-6 gap-4">
-            <button onClick={() => setTab("login")}>Login</button>
-            <button onClick={() => setTab("register")}>Register</button>
-          </div> */}
+
           <div className="flex bg-stone-100 rounded-xl p-1 mb-5">
             {["login", "register"].map((t) => (
               <button

@@ -204,7 +204,7 @@ export default function CheckoutPage() {
             </div>
           </div>
 
-          {/* ── Right: Cart item summary ── */}
+          {/* Right: Cart item summary */}
           <div className="md:col-span-2">
             <div className="bg-white rounded-2xl p-6 sticky top-6">
               <h2 className="font-medium text-stone-900 mb-4">

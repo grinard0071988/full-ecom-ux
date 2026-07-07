@@ -3,7 +3,7 @@ import { IconHeart } from "../../icons/index";
 import { Stars } from "../../components/Stars";
 import { Badge } from "../../components/Badge";
 
-// ─── Helpers ──────────────────────────────────────────────────────────────────
+//Helpers
 
 function formatPrice(value) {
   if (value == null) return null;
@@ -24,13 +24,14 @@ function deriveBadge(product) {
   return null;
 }
 
-// ─── ProductCard ──────────────────────────────────────────────────────────────
+// ProductCard
 
 export function ProductCard({
   product,
   onQuickView,
   onWishlist,
   wishlist = [],
+  user,
 }) {
   const [imgError, setImgError] = useState(false);
 
@@ -38,7 +39,7 @@ export function ProductCard({
   if (!product) return null;
 
   const wishlistSet = useMemo(() => new Set(wishlist), [wishlist]);
-  const isWishlisted = wishlistSet.has(product.id);
+  const isWishlisted = user && wishlistSet.has(product.id);
 
   const id = product.id;
   const img = product.img || product.image || product.image_url || null;
@@ -74,17 +75,6 @@ export function ProductCard({
 
   // derive badge from flags rather than expecting an exact "badge" field
   const badge = deriveBadge(product);
-
-  //   const {
-  //     category = "",
-  //     badge = null,
-  //     inStock = true,
-  //     rating = 0,
-  //     reviews = 0,
-  //     price,
-  //     originalPrice,
-  //     colors = [],
-  //   } = product;
 
   const handleQuickView = () => {
     if (typeof onQuickView === "function") onQuickView(product);
@@ -181,7 +171,7 @@ export function ProductCard({
         </button>
       </div>
 
-      {/* ── Info area ── */}
+      {/* Info area */}
       <div className="p-4">
         {category && (
           <p className="text-xs text-stone-400 mb-0.5 uppercase tracking-wider">
@@ -223,7 +213,7 @@ export function ProductCard({
             <div className="flex gap-1">
               {colors.slice(0, 3).map((c) => (
                 <div
-                  key={c} // ✅ stable key
+                  key={c} //stable key
                   title={c}
                   className="w-3 h-3 rounded-full border border-stone-200"
                   style={{ background: c }}

@@ -17,3 +17,7 @@ h2,
 h3 {
   font-family: "Playfair Display", Georgia, serif;
 }
+.navbar-logo {
+  height: 40px; /* tweak to your navbar height */
+  width: auto;
+}

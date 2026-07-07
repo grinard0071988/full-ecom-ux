@@ -1,4 +1,4 @@
-// ─── Badge — product label pill (New / Sale / Bestseller) ────────────────────
+//Badge — product label pill (New / Sale / Bestseller)
 
 export function Badge({ label }) {
   if (!label) return null;

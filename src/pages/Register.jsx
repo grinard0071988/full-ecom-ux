@@ -130,4 +130,3 @@ export function Register({ onSubmit, switchToLogin }) {
     </div>
   );
 }
-///////////////////////////////////////////

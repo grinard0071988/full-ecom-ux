@@ -1,4 +1,3 @@
-////////////////////////////////////////////////////////////////////////////////////
 import { useEffect, useState, useCallback } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { fetchProducts } from "../features/products/productSlice";
@@ -37,6 +36,7 @@ export default function ProductList({
   onClearFilters,
   wishlistIds,
   toggleWishlist,
+  user,
 }) {
   const dispatch = useDispatch();
   const items = useSelector(selectItems);
@@ -69,8 +69,6 @@ export default function ProductList({
       if (sortBy === "Newest") return b.id - a.id;
       return 0; // "Featured" — preserve backend order
     });
-
-  //   console.log("First product:", items[0]);
 
   // Loading
   if (listLoading && items.length === 0) {
@@ -177,6 +175,7 @@ export default function ProductList({
             wishlist={[...wishlistIds]}
             onQuickView={onQuickView}
             onWishlist={toggleWishlist}
+            user={user}
           />
         ))}
       </div>

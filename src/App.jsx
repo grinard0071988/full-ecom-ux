@@ -4,7 +4,7 @@ import { useDispatch } from "react-redux";
 
 import { loadUser } from "./features/auth/authSlice";
 import Home from "./pages/Home";
-import CheckoutPage from "./features/orders/checkoutPage";
+import CheckoutPage from "./features/orders/CheckoutPage";
 import OrderSuccess from "./pages/OrderSuccess";
 
 export default function App() {

@@ -1,4 +1,4 @@
-// ─── Footer ───────────────────────────────────────────────────────────────────
+//Footer
 
 const FOOTER_COLS = [
   {
@@ -56,7 +56,11 @@ export function Footer() {
         {/* Bottom bar */}
         <div className="flex flex-col sm:flex-row items-center justify-between gap-3 pt-6 border-t border-stone-100">
           <span className="font-serif text-lg font-semibold text-stone-900">
-            SHOPNJOY
+            <img
+              src="shopnjoy_logo.svg"
+              className="navbar-logo"
+              alt="shopnjoy"
+            />
           </span>
           <p className="text-xs text-stone-400">
             © {new Date().getFullYear()} Shopnjoy. Thoughtfully made.

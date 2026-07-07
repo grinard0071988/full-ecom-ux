@@ -1,4 +1,3 @@
-//////////////////////////////////////////////////////////////////////////////////////////
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axiosClient from "../../api/index";
 import { imgEndPoint } from "../../api/productsApi";
